@@ -2,7 +2,7 @@ import pylatex
 import pylatex.utils
 
 
-class Base_Container():
+class BaseContainer():
     """
     The base class for the package.
 
@@ -13,7 +13,7 @@ class Base_Container():
     def __init__(self, title):
         """Constructor Method."""
         self.title = title
-        
+
 
 
     @property
@@ -24,6 +24,19 @@ class Base_Container():
     @title.setter
     def title(self, value):
         self._title = value
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, parent):
+        self._parent = parent
+
+
+    def write(self, config):
+        """Read in a Configuration and create the sections, call the sections write function and pass in that sections configuration."""
+        pass
 
 
     def write_raw(self, content):
