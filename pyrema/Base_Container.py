@@ -1,6 +1,8 @@
 import pylatex
 import pylatex.utils
 
+import os
+
 
 class BaseContainer():
     """
@@ -10,10 +12,15 @@ class BaseContainer():
     :type title: str.
     """
 
-    def __init__(self, title):
+    def __init__(self, title, tex_object, parent=None):
         """Constructor Method."""
         self.title = title
+        self.parent = parent
+        self.dir = self.title
+        self.children = []
 
+        if not os.path.exists(self.dir) and self.child_dir:
+            os.mkdir(self.dir)
 
 
     @property
@@ -25,13 +32,63 @@ class BaseContainer():
     def title(self, value):
         self._title = value
 
+
     @property
     def parent(self):
         return self._parent
 
+
     @parent.setter
     def parent(self, parent):
         self._parent = parent
+
+
+    @property
+    def dir(self):
+        return self._dir
+
+
+    @dir.setter
+    def dir(self, value):
+        if self.parent:
+            self._dir = os.path.join(self.parent.child_dir, value)
+
+        else:
+            self._dir = os.path.join(f"{os.getcwd()}/Reports", value)
+
+
+    @property
+    def child_dir(self):
+        return self._child_dir
+
+
+    @child_dir.setter
+    def child_dir(self, child):
+        self._child_dir = os.path.join(self.dir, child)
+
+
+    def delete_child(self, child):
+        """Deletes child item."""
+        if child in self.children:
+            self.children.remove(child)
+
+        if not self.children:
+            os.rmdir(self.child_dir)
+
+
+    def create_child(self, child_class, title):
+        """Creates a child object of the child class."""
+        if not os.path.exists(self.child_dir):
+            os.mkdir(self.child_dir)
+
+        child = child_class(title, self)
+        self.children.append(child)
+        return child
+
+
+    def input_child(self, child):
+        """Insert the content of the child into the parent."""
+        self.tex.append(pylatex.Command('input', os.path.join(child.dir, f"{child.title}.tex")))
 
 
     def write(self, config):
@@ -50,11 +107,11 @@ class BaseContainer():
         self.tex.append(pylatex.NewLine())
 
 
-    def generate(self, filepath):
+    def generate(self):
         """
         Generate the Tex files at the given location for the tex object.
 
         :param filepath: The location to write the file.
         :type filepath: str.
         """
-        self.tex.generate_tex(filepath=filepath)
+        self.tex.generate_tex(filepath=os.path.join(self.dir, self.title))

@@ -11,10 +11,6 @@ class BaseReportSubsection(Base_Container.BaseContainer):
     """
 
     def __init__(self, title, parent):
-        super().__init__(title)
-        self.parent = parent
+        super().__init__(title, parent)
         self.tex = pylatex.Subsection(self.title)
-
-
-    def generate(self):
-        super().generate(filepath=os.path.join(self.parent.subsections_dir, self.title))
+        self.child_dir = "Subsubsections" #children_dir
