@@ -12,7 +12,7 @@ class BaseContainer():
     :type title: str.
     """
 
-    def __init__(self, title, tex_object, parent=None):
+    def __init__(self, title, parent=None):
         """Constructor Method."""
         self.title = title
         self.parent = parent

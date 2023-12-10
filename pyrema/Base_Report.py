@@ -86,6 +86,7 @@ class BaseReport(Base_Container.BaseContainer):
 
     def write_title(self):
         self.write_raw("\maketitle")
+        self.add_newpage()
 
 
     def generate(self):
