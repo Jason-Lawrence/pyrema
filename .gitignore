@@ -1,1 +1,5 @@
 .pyrema
+docs/build
+*.egg-info
+.vscode
+build

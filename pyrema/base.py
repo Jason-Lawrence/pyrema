@@ -4,7 +4,7 @@ import pylatex.utils
 import os
 
 
-class BaseContainer():
+class Container():
     """
     The base class for the package.
 

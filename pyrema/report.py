@@ -1,12 +1,44 @@
-import Base_Container
-
 import pylatex
-import pylatex.utils
-
+import base
 import os
 
+class Section(base.Container):
+    """Wrapper for the Section object in """
 
-class BaseReport(Base_Container.BaseContainer):
+    def __init__(self, title, parent):
+        super().__init__(title, parent)
+        self.tex = pylatex.Section(self.title)
+        self.child_dir = "Subsections" #children_dir
+
+
+class Subsection(base.Container):
+    """
+
+    """
+
+    def __init__(self, title, parent):
+        super().__init__(title, parent)
+        self.tex = pylatex.Subsection(self.title)
+        self.child_dir = "Subsubsections" #children_dir
+
+
+class Subsubsection(base.Container):
+    """
+
+    """
+
+    def __init__(self, title, parent):
+        super().__init__(title, parent)
+        self.tex = pylatex.Subsubsection(self.title)
+        self.dir = None
+        self.child_dir = None
+
+
+    def generate(self):
+        self.tex.generate_tex(filepath=os.path.join(self.parent.child_dir, self.title))
+
+
+class Report(base.Container):
     """
     Base Report class. Manages the file tree for the Tex files.
 
