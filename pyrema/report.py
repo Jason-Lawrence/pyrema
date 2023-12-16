@@ -1,34 +1,35 @@
 import pylatex
-import base
+import pyrema.base
 import os
+import pyrema.config
 
-class Section(base.Container):
+class Section(pyrema.base.Container):
     """Wrapper for the Section object in """
 
-    def __init__(self, title, parent):
-        super().__init__(title, parent)
+    def __init__(self, title, config, parent):
+        super().__init__(title, config, parent)
         self.tex = pylatex.Section(self.title)
         self.child_dir = "Subsections" #children_dir
 
 
-class Subsection(base.Container):
+class Subsection(pyrema.base.Container):
     """
 
     """
 
-    def __init__(self, title, parent):
-        super().__init__(title, parent)
+    def __init__(self, title, config, parent):
+        super().__init__(title, config, parent)
         self.tex = pylatex.Subsection(self.title)
         self.child_dir = "Subsubsections" #children_dir
 
 
-class Subsubsection(base.Container):
+class Subsubsection(pyrema.base.Container):
     """
 
     """
 
-    def __init__(self, title, parent):
-        super().__init__(title, parent)
+    def __init__(self, title, config, parent):
+        super().__init__(title, config, parent)
         self.tex = pylatex.Subsubsection(self.title)
         self.dir = None
         self.child_dir = None
@@ -38,7 +39,7 @@ class Subsubsection(base.Container):
         self.tex.generate_tex(filepath=os.path.join(self.parent.child_dir, self.title))
 
 
-class Report(base.Container):
+class Report(pyrema.base.Container):
     """
     Base Report class. Manages the file tree for the Tex files.
 
@@ -48,9 +49,9 @@ class Report(base.Container):
     :type author: str.
     """
 
-    def __init__(self, title, author):
+    def __init__(self, title, author, config=pyrema.config.ReportConfig()):
         """Constructor Method"""
-        super().__init__(title)
+        super().__init__(title, config)
         self.child_dir = "Sections"
         self.author = author
         self.packages = []
@@ -82,10 +83,7 @@ class Report(base.Container):
 
     def make_doc(self):
         """Create the Report Document."""
-        self.tex = pylatex.Document(geometry_options={
-            "margin": "2.2cm",
-            "includeheadfoot": True
-        })
+        self.tex = pylatex.Document(**self.config.report_options)
 
 
     def make_preamble(self):

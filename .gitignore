@@ -3,3 +3,4 @@ docs/build
 *.egg-info
 .vscode
 build
+__pycache__

@@ -4,6 +4,48 @@ import pylatex.utils
 import os
 
 
+class Config():
+    """"""
+
+    def __init__(self, config):
+        """Constructor Method."""
+        self.config = config
+        self.children = {}
+
+
+    @property
+    def config(self):
+        return self._config
+
+
+    @config.setter
+    def config(self, config):
+        self._config = config
+
+
+    def add_child(self, child, config):
+        """
+        Add a child to the parent configuration.
+
+        :param child: The child to add.
+        :type child: :class: pyrema.report.Section or subclass.
+        :param config: The child's configuration.
+        :type config: :class: pyrema.base.Config or subclass.
+        """
+        self.children[child] = config
+
+
+    def delete_child(self, child):
+        """
+        Delete the child from the configuration.
+
+        :param child: The child to delete.
+        :type child: pyrema.report.Section or subclass.
+        """
+        if child in self.children.keys():
+            del self.children[child]
+
+
 class Container():
     """
     The base class for the package.
@@ -12,12 +54,14 @@ class Container():
     :type title: str.
     """
 
-    def __init__(self, title, parent=None):
+    def __init__(self, title, config=None, parent=None, child_dir=None):
         """Constructor Method."""
         self.title = title
         self.parent = parent
         self.dir = self.title
+        self.config = config
         self.children = []
+        self.child_dir = child_dir
 
         if not os.path.exists(self.dir) and self.child_dir:
             os.mkdir(self.dir)
@@ -64,7 +108,11 @@ class Container():
 
     @child_dir.setter
     def child_dir(self, child):
-        self._child_dir = os.path.join(self.dir, child)
+        if child:
+            self._child_dir = os.path.join(self.dir, child)
+
+        else:
+            self._child_dir = None
 
 
     def delete_child(self, child):
