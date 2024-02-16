@@ -1,11 +1,12 @@
 import unittest
 
-from pyrema.report import (
+from pyrema import (
     Report,
     Section,
     Subsection,
     Subsubsection
 )
+
 import os
 
 def get_base_path():
@@ -42,4 +43,4 @@ class TestReport(unittest.TestCase):
         sec = report.create_child(Section, "Test Section")
 
         self.assertEqual(sec.title, "Test Section")
-        self.assertIn(sec, report.sections)
+        self.assertIn(sec, report.children)

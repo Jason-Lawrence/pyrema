@@ -63,9 +63,8 @@ class Container():
         self.children = []
         self.child_dir = child_dir
 
-        if not os.path.exists(self.dir) and self.child_dir:
+        if not os.path.exists(self.dir) and not self.parent:
             os.mkdir(self.dir)
-
 
     @property
     def title(self):
@@ -129,7 +128,7 @@ class Container():
         if not os.path.exists(self.child_dir):
             os.mkdir(self.child_dir)
 
-        child = child_class(title, self)
+        child = child_class(title, parent=self)
         self.children.append(child)
         return child
 

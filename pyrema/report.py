@@ -6,8 +6,8 @@ import pyrema.config
 class Section(pyrema.base.Container):
     """Wrapper for the Section object in """
 
-    def __init__(self, title, config, parent):
-        super().__init__(title, config, parent)
+    def __init__(self, title, config=None, parent=None):
+        super().__init__(title, config=config, parent=parent)
         self.tex = pylatex.Section(self.title)
         self.child_dir = "Subsections" #children_dir
 
@@ -59,6 +59,12 @@ class Report(pyrema.base.Container):
         if not os.path.exists(os.path.join(os.getcwd(), "Reports")):
             os.mkdir(os.path.join(os.getcwd(), "Reports"))
 
+
+    def __str__(self):
+        return f"Report: {self.title}, By {self.author}"
+
+    def __repr__(self):
+        return f"Report({self.title}, {self.author})"
 
     @property
     def author(self):
